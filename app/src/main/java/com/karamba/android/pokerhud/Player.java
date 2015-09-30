@@ -8,7 +8,7 @@ public class Player {
   private final int active;
   private final int called;
   private final int raised;
-  private final int action;
+  private int action;
 
   public Player(String name, int id, int hands, int seat, int active, int called, int raised, int action) {
     this.name = name;
@@ -59,5 +59,9 @@ public class Player {
 
   public int getPfr() {
     return raised * 100 / hands;
+  }
+
+  public void setAction(int action) {
+    this.action = action;
   }
 }

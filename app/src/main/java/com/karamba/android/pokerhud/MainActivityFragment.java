@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -76,6 +77,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
   @Override
   public void onClick(View view) {
     if (view == addPlayerView) {
+      // TODO (aalbert):
     } else if (view == prevView) {
       if (currentHand > 1) {
         currentHand--;
@@ -84,8 +86,18 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     } else if (view == nextView) {
       if (currentHand <= maxHand) {
         currentHand++;
-        loadHands();
+      } else {
+        insertHand();
+        maxHand++;
+        currentHand++;
       }
+      loadHands();
+    }
+  }
+
+  private void insertHand() {
+    for (Player player : adapter.getItems()) {
+      // TODO (aalbert):
     }
   }
 
@@ -96,7 +108,7 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     }
   }
 
-  private class MyAdapter extends ArrayAdapter<Player> {
+  private class MyAdapter extends ArrayAdapter<Player> implements CompoundButton.OnCheckedChangeListener {
 
     private final Context context;
 
@@ -118,8 +130,16 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
       ((TextView) view.findViewById(R.id.pfr)).setText(String.valueOf(player.getPfr()));
 
       final int action = currentHand > maxHand ? 0 : player.getAction();
-      ((ToggleButton) view.findViewById(R.id.raise)).setChecked(action == PokerHudConstants.RAISE);
-      ((ToggleButton) view.findViewById(R.id.call)).setChecked(action == PokerHudConstants.CALLED);
+      final ToggleButton raiseView = (ToggleButton) view.findViewById(R.id.raise);
+      final ToggleButton callView = (ToggleButton) view.findViewById(R.id.call);
+      raiseView.setChecked(action == PokerHudConstants.RAISE);
+      raiseView.setOnCheckedChangeListener(this);
+      raiseView.setTag(R.id.tag_player, player);
+      raiseView.setTag(R.id.tag_other_button, callView);
+      callView.setChecked(action == PokerHudConstants.CALLED);
+      callView.setOnCheckedChangeListener(this);
+      callView.setTag(R.id.tag_player, player);
+      callView.setTag(R.id.tag_other_button, raiseView);
 
       return view;
     }
@@ -133,6 +153,19 @@ public class MainActivityFragment extends Fragment implements View.OnClickListen
     @Override
     public long getItemId(final int position) {
       return getItem(position).hashCode();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton view, boolean b) {
+      final Player player = (Player) view.getTag(R.id.tag_player);
+      if (view.getId() == R.id.raise) {
+        player.setAction(b ? PokerHudConstants.RAISE : PokerHudConstants.FOLD);
+      } else {
+        player.setAction(b ? PokerHudConstants.CALLED : PokerHudConstants.FOLD);
+      }
+      if (b) {
+        ((ToggleButton) view.getTag(R.id.tag_other_button)).setChecked(false);
+      }
     }
   }
 
