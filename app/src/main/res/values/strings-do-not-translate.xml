@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="item_text">Item 1</string>
+  <string name="stat_sample">100</string>
+  <string name="hand_number_sample">Hand 121</string>
+</resources>

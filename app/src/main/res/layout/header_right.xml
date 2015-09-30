@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <TextView
+      android:id="@+id/vpip"
+      android:layout_width="@dimen/list_item_vpip_width"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:gravity="right"
+      android:textSize="15sp"
+      android:text="@string/vpip"
+      />
+  <TextView
+      android:id="@+id/pfr"
+      android:layout_width="@dimen/list_item_pfr_width"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:gravity="right"
+      android:textSize="15sp"
+      android:text="@string/pfr"
+      />
+
+  <TextView
+      android:id="@+id/hands"
+      android:layout_width="@dimen/list_item_hands_width"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:gravity="right"
+      android:textSize="15sp"
+      android:text="@string/hands"
+      />
+
+</merge>

@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+    </style>
+
+  <style name="ActionButton">
+    <item name="android:layout_marginLeft">4dp</item>
+    <item name="android:layout_marginRight">4dp</item>
+    <item name="android:paddingLeft">6dp</item>
+    <item name="android:paddingRight">6dp</item>
+    <item name="android:paddingTop">2dp</item>
+    <item name="android:paddingBottom">2dp</item>
+    <item name="android:background">@drawable/action_button</item>
+    <item name="android:minWidth">0dp</item>
+    <item name="android:minHeight">0dp</item>
+    <item name="android:textColor">@color/action_button_text_color</item>
+    <item name="android:textSize">15sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+
+</resources>

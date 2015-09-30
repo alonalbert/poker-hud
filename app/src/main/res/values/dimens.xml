@@ -1,0 +1,13 @@
+<resources>
+  <!-- Default screen margins, per the Android Design guidelines. -->
+  <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="activity_vertical_margin">16dp</dimen>
+
+  <dimen name="toggle_button_size">20dp</dimen>
+  <dimen name="toggle_button_radius">6dp</dimen>
+  <dimen name="toggle_button_stroke_width">2dp</dimen>
+  <dimen name="list_item_vpip_width">40dp</dimen>
+  <dimen name="list_item_pfr_width">40dp</dimen>
+  <dimen name="list_item_hands_width">50dp</dimen>
+  <dimen name="list_item_seat_width">30dp</dimen>
+</resources>

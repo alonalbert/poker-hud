@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+  <TextView
+      android:id="@+id/seat"
+      android:layout_width="@dimen/list_item_seat_width"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:textSize="15sp"
+      android:text="@string/seat"
+      />
+  <TextView
+      android:id="@+id/name"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:layout_gravity="center_vertical"
+      android:textSize="15sp"
+      android:text="@string/player_name"
+      />
+
+</merge>

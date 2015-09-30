@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    tools:ignore="UseCompoundDrawables"
+    >
+
+  <include layout="@layout/header_left"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:orientation="horizontal"
+      />
+
+  <ToggleButton
+      android:id="@+id/raise"
+      style="@style/ActionButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:gravity="center_vertical"
+      android:textOff="@string/raise"
+      android:textOn="@string/raise"
+      />
+
+  <ToggleButton
+      android:id="@+id/call"
+      style="@style/ActionButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:checked="true"
+      android:gravity="center_vertical"
+      android:textOff="@string/call"
+      android:textOn="@string/call"
+      />
+
+  <LinearLayout
+      android:id="@+id/grip"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:orientation="horizontal"
+      >
+
+    <include layout="@layout/header_right" />
+
+  </LinearLayout>
+
+</LinearLayout>
