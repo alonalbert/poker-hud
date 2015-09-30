@@ -54,11 +54,11 @@ public class Player {
   }
 
   public int getVpip() {
-    return (called + raised) * 100 / hands;
+    return hands > 0 ? (called + raised) * 100 / hands : 0;
   }
 
   public int getPfr() {
-    return raised * 100 / hands;
+    return hands > 0 ? raised * 100 / hands : 0;
   }
 
   public void setAction(int action) {

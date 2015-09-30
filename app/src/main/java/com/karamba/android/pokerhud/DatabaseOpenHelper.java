@@ -1,5 +1,6 @@
 package com.karamba.android.pokerhud;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,7 +42,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
   }
 
   public int getLastHandNumber() {
-    try (SQLiteDatabase db = getReadableDatabase()){
+    try (SQLiteDatabase db = getReadableDatabase()) {
       try (Cursor cursor = db.rawQuery("SELECT MAX(hand) FROM hands", null)) {
         if (cursor == null || !cursor.moveToNext()) {
           return 0;
@@ -52,7 +53,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
   }
 
   public List<Player> getPlayers(int hand) {
-    try (SQLiteDatabase db = getReadableDatabase()){
+    try (SQLiteDatabase db = getReadableDatabase()) {
       final String handStr = String.valueOf(hand);
       final ArrayList<Player> players = new ArrayList<>();
       try (Cursor cursor = db.rawQuery(
@@ -68,7 +69,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
               "FROM hands JOIN players ON player = players._id " +
               "WHERE hand=? " +
               "ORDER BY seat",
-          new String[] {handStr, handStr, handStr, handStr})) {
+          new String[]{handStr, handStr, handStr, handStr})) {
         if (cursor != null) {
           while (cursor.moveToNext()) {
             final int playerId = cursor.getInt(0);
@@ -86,6 +87,34 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
         return players;
       }
     }
+  }
+
+  public void insertHand(int hand, List<Player> players) {
+    try (SQLiteDatabase db = getWritableDatabase()) {
+      final ContentValues values = new ContentValues();
+      values.put("hand", hand);
+      for (int i = 0, n = players.size(); i < n; i++) {
+        Player player = players.get(i);
+        values.put("player", player.getId());
+        values.put("seat", i + 1);
+        values.put("active", 1);
+        values.put("act", player.getAction());
+        db.insert("hands", null, values);
+      }
+    }
+  }
+
+  public Cursor getPlayers(String exclude) {
+    return getReadableDatabase().query(
+        "players",
+        new String[]{
+            "name",
+            "_id",
+        },
+        "_id" + " NOT IN (" + exclude + ")",
+        null,
+        "name",
+        null, null);
   }
 
   @Override
@@ -189,6 +218,40 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper {
           throw new IllegalStateException(String.format(
               "method %s must return either int or void", name));
         }
+      }
+    }
+  }
+
+  public int insertPlayer(String name) {
+    try (SQLiteDatabase db = getWritableDatabase()) {
+      final ContentValues values = new ContentValues();
+      values.put("name", name);
+      return (int) db.insert("players", null, values);
+    }
+  }
+
+  public Player getPlayer(int playerId, int hand) {
+    try (SQLiteDatabase db = getReadableDatabase()) {
+      final String handStr = String.valueOf(hand);
+      final String playerIdStr = String.valueOf(playerId);
+      try (Cursor c = db.rawQuery(
+          "SELECT " +
+              "name, " +
+              "(SELECT COUNT(*) FROM hands WHERE hands.player = players._id AND active = 1 AND hand <= ?) AS hands, " +
+              "(SELECT COUNT(*) FROM hands WHERE hands.player = players._id AND active = 1 AND act = 2 AND hand <= ?) AS raised, " +
+              "(SELECT COUNT(*) FROM hands WHERE hands.player = players._id AND active = 1 AND act = 1 AND hand <= ?) AS called " +
+              "FROM players LEFT JOIN hands ON player = players._id " +
+              "WHERE players._id=?",
+          new String[]{handStr, handStr, handStr, playerIdStr})) {
+        if (c == null || !c.moveToNext()) {
+          return null;
+        }
+        final String playerName = c.getString(0);
+        final int hands = c.getInt(1);
+        final int raised = c.getInt(2);
+        final int called = c.getInt(3);
+
+        return new Player(playerName, playerId, hands, -1, 1, called, raised, PokerHudConstants.FOLD);
       }
     }
   }
